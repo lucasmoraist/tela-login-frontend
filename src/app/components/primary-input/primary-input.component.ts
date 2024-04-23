@@ -19,6 +19,8 @@ type InputTypes = "text" | "email" | "password"
   templateUrl: './primary-input.component.html',
   styleUrl: './primary-input.component.scss'
 })
+
+// Implementando ControlValueAcessor para receber ref do form control e injete no input
 export class PrimaryInputComponent implements ControlValueAccessor {
 
   @Input() type: InputTypes = "text";
@@ -26,7 +28,9 @@ export class PrimaryInputComponent implements ControlValueAccessor {
   @Input() label: string = "";
   @Input() inputName: string = "";
 
+  // Para salvar o valor do input
   value: string = "";
+  // Outras funções que input deve ter
   onChange: any = () => { };
   onTouched: any = () => { };
 
