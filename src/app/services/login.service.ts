@@ -8,18 +8,29 @@ import { tap } from 'rxjs';
 })
 export class LoginService {
 
+  apiUrl: string = "http://localhost:8080"
+
   constructor(private httpClient: HttpClient) { }
   /**
-   * 
+   *
    * @param email email passado pelo usuário
    * @param password senha passada pelo usuário
-   * @returns 
+   * @returns
    * Irá retornar uma req http do tipo post para o endereçamento da api e os dados que serão passados
    * Será utilizado o pipe para pegar o valor retornado (token) e salvar ele na nossa sessão
    * O tap está sendo utilizado por conta de ser uma função async
    */
   login(email: string, password: string) {
-    return this.httpClient.post<LoginResponse>("/login", { email, password }).pipe(
+    return this.httpClient.post<LoginResponse>(this.apiUrl + "/auth/login", { email, password }).pipe(
+      tap((value) => {
+        sessionStorage.setItem("auth-token", value.token)
+        sessionStorage.setItem("username", value.email)
+      })
+    )
+  }
+
+  signup(name: string, email: string, password: string){
+    return this.httpClient.post<LoginResponse>(this.apiUrl + "/auth/register", { name, email, password }).pipe(
       tap((value) => {
         sessionStorage.setItem("auth-token", value.token)
         sessionStorage.setItem("username", value.email)
