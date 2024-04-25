@@ -31,7 +31,7 @@ export class SignupComponent {
   signupForm!: FormGroup<SignupForm>;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private loginService: LoginService,
     private toastService: ToastrService
   ) {
@@ -48,8 +48,12 @@ export class SignupComponent {
   submit(): any {
     let email = this.signupForm.value.email;
     let password = this.signupForm.value.password;
-    this.loginService.login(email, password).subscribe({
-      next: () => this.toastService.success("Login feito com sucesso"),
+    let name = this.signupForm.value.name;
+    this.loginService.signup(name, email, password).subscribe({
+      next: () => {
+        this.toastService.success("Login feito com sucesso");
+        this.router.navigate(["login"])
+      },
       error: () => this.toastService.error("Tente novamente mais tarde")
     });
   }
